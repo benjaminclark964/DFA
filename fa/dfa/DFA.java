@@ -1,5 +1,6 @@
 package fa.dfa;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -8,35 +9,64 @@ import fa.State;
 public class DFA implements DFAInterface {
 	
 	private String finalStates;
-	private String startState;
+	private State startState;
 	private Set<String> allStates;
-	private String transitions;
+	private Set<State> all_states;
 	private Set<Character> abc;
+	private Set<? extends State> states;
+	private Set<? extends State> final_state;
 	
 	public DFA() {
 		allStates = new HashSet<String>();
 		finalStates = "";
-		startState = "";
 		abc = new HashSet<Character>();
+		states = new HashSet<State>();
+		all_states = new HashSet<State>();
+	}
+	
+	private State getState(String state) {
+		State ret = null;
+		
+			for(State s : states) {
+				if(s.toString().equals(state)) {
+					ret = s;
+					break;
+				}
+			}
+		
+		return ret;
 	}
 
 	@Override
 	public void addStartState(String s) {
 		// TODO Auto-generated method stub
-		startState = s;
+		State state = getState(s);
+		if(state == null) {
+			state = new DFAState(s);
+			startState = state;
+			addState(s);
+		}
+		
+		
 		allStates.add(s);
 	}
 
 	@Override
 	public void addState(String name) {
 		// TODO Auto-generated method stub
+		DFAState s = new DFAState(name);
+		s.addState(name);
+		all_states.add(s);
 		allStates.add(name);
 	}
+	
+	
 
 	@Override
 	public void addFinalState(String F) {
 		// TODO Auto-generated method stub
 		finalStates += F;
+		addState(F);
 		allStates.add(F);
 	}
 
@@ -49,8 +79,7 @@ public class DFA implements DFAInterface {
 	@Override
 	public Set<? extends State> getStates() {
 		// TODO Auto-generated method stub
-		//return allStates;
-		return null;
+		return states;
 	}
 
 	@Override
@@ -58,13 +87,13 @@ public class DFA implements DFAInterface {
 		// TODO Auto-generated method stub
 		
 		//return finalStates; 
-		return null;
+		return final_state;
 	}
 
-	@Override
+	@Override	//DONE
 	public State getStartState() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return startState;
 	}
 
 	@Override
@@ -123,6 +152,7 @@ public class DFA implements DFAInterface {
 		
 		retVal += "Q = ";
 		retVal += allStatesProperStringFormat(allStates);
+		//retVal += getStates();
 		retVal += '\n';
 		
 		retVal += "Sigma = ";
@@ -133,7 +163,8 @@ public class DFA implements DFAInterface {
 		//add Delta table here
 		retVal += '\n';
 		
-		retVal += "q0 = " + startState;
+		//retVal += "q0 = " + startState;
+		retVal += "q0 = " + startState.getName();
 		retVal += '\n';
 		
 		retVal += "F = ";

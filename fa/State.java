@@ -21,5 +21,10 @@ public abstract class State {
 		return name;
 	}
 	
+	public void addState(String state) {
+		
+		name = state;
+	}
+	
 	
 }

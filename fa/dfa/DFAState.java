@@ -19,6 +19,18 @@ public class DFAState extends State {
 		delta = new HashMap<Character, DFAState>();
 	}
 	
+	public DFAState(String s) {
+		initString(s);
+		isFinal = false;
+	}
+	
+	public void initString(String state) {
+		this.name = state;
+		delta = new HashMap<Character, DFAState>();
+	}
+	
+	//public addState
+	
 	/**
 	 * Adds a transition state to the DFA
 	 * @param onSymb character in delta
