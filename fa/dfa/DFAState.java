@@ -19,6 +19,18 @@ public class DFAState extends State {
 		delta = new HashMap<Character, DFAState>();
 	}
 	
+	public DFAState(String s, boolean finalState) {
+		if (finalState) {
+			
+			isFinal = true;
+			
+		} else {
+			
+			isFinal = false;
+			
+		}
+	}
+	
 	public DFAState(String s) {
 		initString(s);
 		isFinal = false;

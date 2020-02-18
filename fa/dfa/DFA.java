@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.swing.undo.StateEdit;
+
 import fa.State;
 
 public class DFA implements DFAInterface {
@@ -14,14 +16,15 @@ public class DFA implements DFAInterface {
 	private Set<State> all_states;
 	private Set<Character> abc;
 	private Set<? extends State> states;
-	private Set<? extends State> final_state;
+	private Set<State> final_states;
 	
 	public DFA() {
 		allStates = new HashSet<String>();
-		finalStates = "";
+		finalStates = "";	//to be removed once state version works
 		abc = new HashSet<Character>();
 		states = new HashSet<State>();
 		all_states = new HashSet<State>();
+		final_states = new HashSet<State>();
 	}
 	
 	private State getState(String state) {
@@ -48,7 +51,7 @@ public class DFA implements DFAInterface {
 		}
 		
 		
-		allStates.add(s);
+		allStates.add(s);	// String version to be removed
 	}
 
 	@Override
@@ -56,8 +59,8 @@ public class DFA implements DFAInterface {
 		// TODO Auto-generated method stub
 		DFAState s = new DFAState(name);
 		s.addState(name);
-		all_states.add(s);
-		allStates.add(name);
+		all_states.add(s);		//set of states
+		allStates.add(name);	//set of strings (to be removed when set of states works)
 	}
 	
 	
@@ -65,9 +68,17 @@ public class DFA implements DFAInterface {
 	@Override
 	public void addFinalState(String F) {
 		// TODO Auto-generated method stub
-		finalStates += F;
-		addState(F);
-		allStates.add(F);
+		finalStates += F;	//String
+		State state = getState(F);
+		
+		if(state == null) {
+			DFAState finalState = new DFAState(F);
+			final_states.add(finalState);
+			addState(F);
+		}
+		
+		
+		allStates.add(F);	//set of strings
 	}
 
 	@Override
@@ -79,15 +90,14 @@ public class DFA implements DFAInterface {
 	@Override
 	public Set<? extends State> getStates() {
 		// TODO Auto-generated method stub
-		return states;
+		return all_states;
 	}
 
 	@Override
 	public Set<? extends State> getFinalStates() {
 		// TODO Auto-generated method stub
-		
 		//return finalStates; 
-		return final_state;
+		return final_states;
 	}
 
 	@Override	//DONE
@@ -122,7 +132,7 @@ public class DFA implements DFAInterface {
 	}
 	
 	//add java doc
-	private String allStatesProperStringFormat(Set<String> allStates) {
+	private String allStatesProperStringFormat(String Set) {
 		StringBuilder retVal = new StringBuilder(allStates.toString() + "  ");
 		String currentStatesString = allStates.toString();
 		int retValIndex = 0;
@@ -151,8 +161,8 @@ public class DFA implements DFAInterface {
 		String retVal = "";
 		
 		retVal += "Q = ";
-		retVal += allStatesProperStringFormat(allStates);
-		//retVal += getStates();
+		//retVal += allStatesProperStringFormat(allStates);
+		retVal += allStatesProperStringFormat(getStates().toString());	// returns proper states, but not proper format.
 		retVal += '\n';
 		
 		retVal += "Sigma = ";
@@ -168,7 +178,8 @@ public class DFA implements DFAInterface {
 		retVal += '\n';
 		
 		retVal += "F = ";
-		retVal += "{ " + finalStates.toString() + " }";
+		//retVal += "{ " + finalStates.toString() + " }";
+		retVal += allStatesProperStringFormat(getFinalStates().toString());
 		
 		return retVal;
 	}
