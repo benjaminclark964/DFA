@@ -2,6 +2,7 @@ package fa.dfa;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Set;
 
 import fa.State;
 
@@ -41,8 +42,6 @@ public class DFAState extends State {
 		delta = new HashMap<Character, DFAState>();
 	}
 	
-	//public addState
-	
 	/**
 	 * Adds a transition state to the DFA
 	 * @param onSymb character in delta
@@ -51,5 +50,4 @@ public class DFAState extends State {
 	public void addTransition(char onSymb, DFAState name) {
 		delta.put(onSymb, name);
 	}
-	
 }

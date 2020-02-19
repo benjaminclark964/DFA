@@ -68,7 +68,7 @@ public class DFA implements DFAInterface {
 	@Override
 	public void addTransition(String fromState, char onSymb, String toState) {
 		// TODO Auto-generated method stub
-		
+		abc.add(onSymb);
 	}
 
 	@Override
@@ -148,7 +148,7 @@ public class DFA implements DFAInterface {
 		retVal += '\n';
 		
 		retVal += "Sigma = ";
-		//add transitions values here
+		retVal += allStatesProperStringFormat(getABC().toString());
 		retVal += '\n';
 		
 		retVal += "Delta = ";
@@ -163,5 +163,4 @@ public class DFA implements DFAInterface {
 		
 		return retVal;
 	}
-
 }
