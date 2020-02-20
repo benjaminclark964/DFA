@@ -8,6 +8,7 @@ import fa.State;
 public class DFA implements DFAInterface {
 	
 	private State startState;
+	private DFAState currentState;
 	private Set<State> all_states;
 	private Set<Character> abc;
 	private Set<State> delta;
@@ -24,17 +25,17 @@ public class DFA implements DFAInterface {
 		isFinal = false;
 	}
 	
-	private State getState(String state) {
+	private DFAState getState(String state) {
 		State ret = null;
 		
-			for(State s : states) {
+			for(State s : getStates()) {
 				if(s.toString().equals(state)) {
 					ret = s;
 					break;
 				}
 			}
 		
-		return ret;
+		return (DFAState) ret;
 	}
 
 	@Override
@@ -44,6 +45,7 @@ public class DFA implements DFAInterface {
 		if(state == null) {
 			state = new DFAState(s);
 			startState = state;
+			currentState = (DFAState)startState;
 			addState(s);
 		}
 	}
@@ -73,10 +75,11 @@ public class DFA implements DFAInterface {
 	@Override
 	public void addTransition(String fromState, char onSymb, String toState) {
 		abc.add(onSymb);
-		DFAState transState = new DFAState(toState);
-		DFAState trans = new DFAState(fromState);
-		trans.addTransition(onSymb, transState);
-		delta.add(trans);
+//		DFAState transState = new DFAState(toState);
+//		DFAState trans = new DFAState(fromState);
+//		trans.addTransition(onSymb, transState);
+//		delta.add(trans);
+		getState(fromState).addTransition(onSymb, getState(toState));
 	}
 
 	@Override
@@ -113,6 +116,26 @@ public class DFA implements DFAInterface {
 	public boolean accepts(String s) {
 		// TODO Auto-generated method stub
 		boolean accepted = false;
+		
+		char[] input = s.toCharArray();
+		
+		// Navigate through DFA
+		for(char c : input) {
+			currentState = (DFAState) getToState(currentState, c);
+		}
+		
+		if(currentState != null) {
+			accepted = true;
+		}
+		
+		// Checks if current State ended on a final state
+		for(State state : final_states) {
+			if(currentState == state) {
+				accepted = true;
+			} 
+		}
+		
+		
 		return accepted;
 	}
 
@@ -171,7 +194,7 @@ public class DFA implements DFAInterface {
 	@Override
 	public String toString() {
 		String retVal = "";
-		retVal += delta.toString() + '\n';
+		
 		retVal += "Q = ";
 		retVal += allStatesProperStringFormat(getStates().toString());	// returns proper states, but not proper format.
 		retVal += '\n';

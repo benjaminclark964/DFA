@@ -16,8 +16,9 @@ public class DFAState extends State {
 	 * @param s represents a DFA State
 	 */
 	public DFAState(DFAState s) {
-		isFinal = false;
-		delta = new HashMap<Character, DFAState>();
+		initString(s.toString());
+		//isFinal = false;
+		//delta = new HashMap<Character, DFAState>();
 	}
 	
 	public DFAState(String s, boolean finalState) {
