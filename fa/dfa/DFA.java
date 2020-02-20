@@ -118,8 +118,7 @@ public class DFA implements DFAInterface {
 
 	@Override
 	public State getToState(DFAState from, char onSymb) {
-		// TODO Auto-generated method stub
-		return null;
+		return from.getTo(onSymb);
 	}
 	
 	//add java doc
