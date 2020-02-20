@@ -1,5 +1,6 @@
 package fa.dfa;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 import fa.State;
@@ -9,14 +10,18 @@ public class DFA implements DFAInterface {
 	private State startState;
 	private Set<State> all_states;
 	private Set<Character> abc;
+	private Set<State> delta;
 	private Set<? extends State> states;
 	private Set<State> final_states;
+	private boolean isFinal;
 	
 	public DFA() {
 		abc = new HashSet<Character>();
 		states = new HashSet<State>();
 		all_states = new HashSet<State>();
+		delta = new HashSet<State>();
 		final_states = new HashSet<State>();
+		isFinal = false;
 	}
 	
 	private State getState(String state) {
@@ -48,7 +53,7 @@ public class DFA implements DFAInterface {
 		
 		DFAState s = new DFAState(name);
 		s.addState(name);
-		all_states.add(s);		
+		all_states.add(s);
 	}
 	
 	
@@ -61,19 +66,22 @@ public class DFA implements DFAInterface {
 		if(state == null) {
 			DFAState finalState = new DFAState(F);
 			final_states.add(finalState);
-			addState(F);
+			//addState(F);
 		}
 	}
 
 	@Override
 	public void addTransition(String fromState, char onSymb, String toState) {
-		// TODO Auto-generated method stub
 		abc.add(onSymb);
+		DFAState transState = new DFAState(toState);
+		DFAState trans = new DFAState(fromState);
+		trans.addTransition(onSymb, transState);
+		delta.add(trans);
 	}
 
 	@Override
 	public Set<? extends State> getStates() {
-		
+		all_states.addAll(getFinalStates());
 		return all_states;
 	}
 
@@ -139,20 +147,43 @@ public class DFA implements DFAInterface {
 		return retVal.toString();
 	}
 	
+	// add java doc
+	private String deltaProperStringFormat(String delta) {
+		String ret = "";
+		for(int i = 0;  i < delta.length(); i++) {
+			if(delta.charAt(i) == '[' || delta.charAt(i) == ']' || delta.charAt(i) == ',') {
+				
+				continue;
+				
+			} else if(delta.charAt(i) >= 'a' && delta.charAt(i) <= 'z') {
+				
+				ret += delta.charAt(i);
+				ret += '\n';
+				
+			} else {
+				
+				ret += delta.charAt(i);
+				
+			}
+		}
+		return ret;
+	}
+	
 	@Override
 	public String toString() {
 		String retVal = "";
-		
+		retVal += delta.toString() + '\n';
 		retVal += "Q = ";
 		retVal += allStatesProperStringFormat(getStates().toString());	// returns proper states, but not proper format.
 		retVal += '\n';
-		
+		 
 		retVal += "Sigma = ";
 		retVal += allStatesProperStringFormat(getABC().toString());
 		retVal += '\n';
 		
-		retVal += "Delta = ";
-		//add Delta table here
+		retVal += "Delta = " + '\n';
+		retVal += "  " + deltaProperStringFormat(getABC().toString()) + '\n';
+		retVal += deltaProperStringFormat(getStates().toString());
 		retVal += '\n';
 		
 		retVal += "q0 = " + startState.getName();
