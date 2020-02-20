@@ -50,4 +50,7 @@ public class DFAState extends State {
 	public void addTransition(char onSymb, DFAState name) {
 		delta.put(onSymb, name);
 	}
+	public DFAState getTo(char symb){
+		return delta.get(symb);
+	}
 }
