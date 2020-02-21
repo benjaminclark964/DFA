@@ -11,18 +11,18 @@ public class DFA implements DFAInterface {
 	private DFAState currentState;
 	private Set<State> all_states;
 	private Set<Character> abc;
-	private Set<State> delta;
-	private Set<? extends State> states;
+	private Set<State> non_final_states;
+	//private Set<? extends State> states;
 	private Set<State> final_states;
-	private boolean isFinal;
+	//private boolean isFinal;
 	
 	public DFA() {
 		abc = new HashSet<Character>();
-		states = new HashSet<State>();
+		//states = new HashSet<State>();
 		all_states = new HashSet<State>();
-		delta = new HashSet<State>();
 		final_states = new HashSet<State>();
-		isFinal = false;
+		non_final_states = new HashSet<State>();
+		//isFinal = false;
 	}
 	
 	private DFAState getState(String state) {
@@ -41,13 +41,15 @@ public class DFA implements DFAInterface {
 	@Override
 	public void addStartState(String s) {
 	
-		State state = getState(s);
-		if(state == null) {
-			state = new DFAState(s);
+		//State state = getState(s);
+		//if(state == null) {
+			State state = new DFAState(s);
 			startState = state;
+			all_states.add(state);
+			non_final_states.add(state);
 			currentState = (DFAState)startState;
-			addState(s);
-		}
+			//addState(s);
+		//}
 	}
 
 	@Override
@@ -55,6 +57,7 @@ public class DFA implements DFAInterface {
 		
 		DFAState s = new DFAState(name);
 		s.addState(name);
+		non_final_states.add(s);
 		all_states.add(s);
 	}
 	
@@ -63,28 +66,24 @@ public class DFA implements DFAInterface {
 	@Override
 	public void addFinalState(String F) {
 		
-		State state = getState(F);
+		//State state = getState(F);
 		
-		if(state == null) {
+		//if(state == null) {
 			DFAState finalState = new DFAState(F);
+			
 			final_states.add(finalState);
-			//addState(F);
-		}
+		//}
 	}
 
 	@Override
 	public void addTransition(String fromState, char onSymb, String toState) {
 		abc.add(onSymb);
-//		DFAState transState = new DFAState(toState);
-//		DFAState trans = new DFAState(fromState);
-//		trans.addTransition(onSymb, transState);
-//		delta.add(trans);
 		getState(fromState).addTransition(onSymb, getState(toState));
 	}
 
 	@Override
 	public Set<? extends State> getStates() {
-		all_states.addAll(getFinalStates());
+		all_states.addAll(final_states);
 		return all_states;
 	}
 
@@ -109,35 +108,65 @@ public class DFA implements DFAInterface {
 	@Override
 	public DFA complement() {
 		// TODO Auto-generated method stub
-		return null;
+		
+		DFA comp = new DFA();
+		comp.startState = startState;
+		comp.final_states = non_final_states;
+		comp.non_final_states = final_states;
+		comp.abc = abc;
+		
+		return comp;
 	}
 
-	@Override
-	public boolean accepts(String s) {
-		// TODO Auto-generated method stub
-		boolean accepted = false;
-		
-		char[] input = s.toCharArray();
-		
-		// Navigate through DFA
-		for(char c : input) {
-			currentState = (DFAState) getToState(currentState, c);
-		}
-		
-		if(currentState != null) {
-			accepted = true;
-		}
-		
-		// Checks if current State ended on a final state
-		for(State state : final_states) {
-			if(currentState == state) {
-				accepted = true;
-			} 
-		}
-		
-		
-		return accepted;
-	}
+//	@Override
+//	public boolean accepts(String s) {
+//		// TODO Auto-generated method stub
+//		boolean accepted = false;
+//		
+//		char[] input = s.toCharArray();
+//		
+//		// Navigate through DFA
+//		for(char c : input) {
+//			currentState = (DFAState) getToState(currentState, c);
+//		}
+//		
+//		if(currentState != null) {
+//			accepted = true;
+//		}
+//		
+//		// Checks if current State ended on a final state
+//		for(State state : final_states) {
+//			if(currentState == state) {
+//				accepted = true;
+//			} 
+//		}
+//		
+//		
+//		return accepted;
+//	}
+	
+	 public boolean accepts(String s) {
+		 boolean accepted = false;
+		 char[] inputString = s.toCharArray();
+		 State currState =  startState;
+
+		 //iterate over the chars
+		 if(! (inputString.length == 1 && inputString[0] == 'e'))
+		 {
+		 for(char c : inputString)
+		 {
+		 currState = getToState((DFAState) currState, c);
+		 }
+		 }
+		 if(final_states.contains(currState))
+		 {
+		 accepted = true;
+		 }
+		 if(currState != null) {
+			 accepted = true;
+		 }
+		 return accepted;
+		 }
 
 	@Override
 	public State getToState(DFAState from, char onSymb) {

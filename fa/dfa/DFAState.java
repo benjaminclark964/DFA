@@ -17,11 +17,12 @@ public class DFAState extends State {
 	 */
 	public DFAState(DFAState s) {
 		initString(s.toString());
-		//isFinal = false;
+		isFinal = false;
 		//delta = new HashMap<Character, DFAState>();
 	}
 	
 	public DFAState(String s, boolean finalState) {
+		initString(s);
 		if (finalState) {
 			
 			isFinal = true;
@@ -43,6 +44,10 @@ public class DFAState extends State {
 		delta = new HashMap<Character, DFAState>();
 	}
 	
+	public boolean isFinal() {
+		return isFinal;
+	}
+	
 	/**
 	 * Adds a transition state to the DFA
 	 * @param onSymb character in delta
@@ -51,7 +56,12 @@ public class DFAState extends State {
 	public void addTransition(char onSymb, DFAState name) {
 		delta.put(onSymb, name);
 	}
+	
 	public DFAState getTo(char symb){
 		return delta.get(symb);
+	}
+	
+	public HashMap<Character, DFAState> getHashMap() {
+		return delta;
 	}
 }
