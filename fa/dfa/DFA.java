@@ -162,9 +162,9 @@ public class DFA implements DFAInterface {
 		 {
 		 accepted = true;
 		 }
-		 if(currState != null) {
-			 accepted = true;
-		 }
+//		 if(currState != null) {
+//			 accepted = true;
+//		 }
 		 return accepted;
 		 }
 
