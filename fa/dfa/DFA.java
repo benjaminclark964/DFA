@@ -12,17 +12,13 @@ public class DFA implements DFAInterface {
 	private Set<State> all_states;
 	private Set<Character> abc;
 	private Set<State> non_final_states;
-	//private Set<? extends State> states;
 	private Set<State> final_states;
-	//private boolean isFinal;
 	
 	public DFA() {
 		abc = new HashSet<Character>();
-		//states = new HashSet<State>();
 		all_states = new HashSet<State>();
 		final_states = new HashSet<State>();
 		non_final_states = new HashSet<State>();
-		//isFinal = false;
 	}
 	
 	private DFAState getState(String state) {
@@ -40,21 +36,15 @@ public class DFA implements DFAInterface {
 
 	@Override
 	public void addStartState(String s) {
-	
-		//State state = getState(s);
-		//if(state == null) {
 			State state = new DFAState(s);
 			startState = state;
 			all_states.add(state);
 			non_final_states.add(state);
 			currentState = (DFAState)startState;
-			//addState(s);
-		//}
 	}
 
 	@Override
 	public void addState(String name) {
-		
 		DFAState s = new DFAState(name);
 		s.addState(name);
 		non_final_states.add(s);
@@ -65,14 +55,8 @@ public class DFA implements DFAInterface {
 
 	@Override
 	public void addFinalState(String F) {
-		
-		//State state = getState(F);
-		
-		//if(state == null) {
 			DFAState finalState = new DFAState(F);
-			
 			final_states.add(finalState);
-		//}
 	}
 
 	@Override
