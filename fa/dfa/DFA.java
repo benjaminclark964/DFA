@@ -117,34 +117,8 @@ public class DFA implements DFAInterface {
 		
 		return comp;
 	}
-
-//	@Override
-//	public boolean accepts(String s) {
-//		// TODO Auto-generated method stub
-//		boolean accepted = false;
-//		
-//		char[] input = s.toCharArray();
-//		
-//		// Navigate through DFA
-//		for(char c : input) {
-//			currentState = (DFAState) getToState(currentState, c);
-//		}
-//		
-//		if(currentState != null) {
-//			accepted = true;
-//		}
-//		
-//		// Checks if current State ended on a final state
-//		for(State state : final_states) {
-//			if(currentState == state) {
-//				accepted = true;
-//			} 
-//		}
-//		
-//		
-//		return accepted;
-//	}
 	
+	@Override
 	 public boolean accepts(String s) {
 		 boolean accepted = false;
 		 char[] inputString = s.toCharArray();
@@ -172,7 +146,7 @@ public class DFA implements DFAInterface {
 	
 	
 	/**
-	 * Formats the toString of the set of the proper format
+	 * Formats the toString of the set to the proper format
 	 * 
 	 * @param set Set being passed into the string
 	 * @return re-formated toString of set
