@@ -170,7 +170,13 @@ public class DFA implements DFAInterface {
 		return from.getTo(onSymb);
 	}
 	
-	//add java doc
+	
+	/**
+	 * Formats the toString of the set of the proper format
+	 * 
+	 * @param set Set being passed into the string
+	 * @return re-formated toString of set
+	 */
 	private String allStatesProperStringFormat(String set) {
 		StringBuilder retVal = new StringBuilder(set.toString() + "  ");
 		String currentStatesString = set.toString();
@@ -230,8 +236,16 @@ public class DFA implements DFAInterface {
 		retVal += '\n';
 		
 		retVal += "Delta = " + '\n';
-		retVal += "  " + deltaProperStringFormat(getABC().toString()) + '\n';
-		retVal += deltaProperStringFormat(getStates().toString());
+		retVal += "     ";
+		for(int i = 0; i < abc.toArray().length; i++) {
+			retVal += abc.toArray()[i].toString();
+			retVal += " ";
+		}
+		retVal += '\n';
+		for(State s : all_states) {
+			retVal += s.toString();
+			retVal += '\n';
+		}
 		retVal += '\n';
 		
 		retVal += "q0 = " + startState.getName();
@@ -239,6 +253,7 @@ public class DFA implements DFAInterface {
 		
 		retVal += "F = ";
 		retVal += allStatesProperStringFormat(getFinalStates().toString());
+		retVal += '\n';
 		
 		return retVal;
 	}
