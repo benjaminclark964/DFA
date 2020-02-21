@@ -201,28 +201,6 @@ public class DFA implements DFAInterface {
 		return retVal.toString();
 	}
 	
-	// add java doc
-	private String deltaProperStringFormat(String delta) {
-		String ret = "";
-		for(int i = 0;  i < delta.length(); i++) {
-			if(delta.charAt(i) == '[' || delta.charAt(i) == ']' || delta.charAt(i) == ',') {
-				
-				continue;
-				
-			} else if(delta.charAt(i) >= 'a' && delta.charAt(i) <= 'z') {
-				
-				ret += delta.charAt(i);
-				ret += '\n';
-				
-			} else {
-				
-				ret += delta.charAt(i);
-				
-			}
-		}
-		return ret;
-	}
-	
 	@Override
 	public String toString() {
 		String retVal = "";
@@ -246,7 +224,6 @@ public class DFA implements DFAInterface {
 			retVal += s.toString();
 			retVal += '\n';
 		}
-		retVal += '\n';
 		
 		retVal += "q0 = " + startState.getName();
 		retVal += '\n';
