@@ -155,16 +155,13 @@ public class DFA implements DFAInterface {
 		 {
 		 for(char c : inputString)
 		 {
-		 currState = getToState((DFAState) currState, c);
+			 currState = getToState((DFAState) currState, c);
 		 }
 		 }
 		 if(final_states.contains(currState))
 		 {
-		 accepted = true;
+			 accepted = true;
 		 }
-//		 if(currState != null) {
-//			 accepted = true;
-//		 }
 		 return accepted;
 		 }
 
