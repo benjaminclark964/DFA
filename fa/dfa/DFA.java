@@ -38,7 +38,6 @@ public class DFA implements DFAInterface {
 	public void addStartState(String s) {
 			State state = new DFAState(s);
 			startState = state;
-			//all_states.add(state);
 			non_final_states.add(state);
 			currentState = (DFAState)startState;
 	}
@@ -48,7 +47,6 @@ public class DFA implements DFAInterface {
 		DFAState s = new DFAState(name);
 		s.addState(name);
 		non_final_states.add(s);
-		//all_states.add(s);
 	}
 	
 	
@@ -86,14 +84,12 @@ public class DFA implements DFAInterface {
 
 	@Override
 	public Set<Character> getABC() {
-		// TODO Auto-generated method stub
+		
 		return abc;
 	}
 
 	@Override
-	public DFA complement() {
-		// TODO Auto-generated method stub
-		
+	public DFA complement() {		
 		DFA comp = new DFA();
 		comp.startState = startState;
 		comp.final_states = non_final_states;
@@ -165,7 +161,7 @@ public class DFA implements DFAInterface {
 		String retVal = "";
 		
 		retVal += "Q = ";
-		retVal += allStatesProperStringFormat(getStates().toString());	// returns proper states, but not proper format.
+		retVal += allStatesProperStringFormat(getStates().toString());
 		retVal += '\n';
 		 
 		retVal += "Sigma = ";
