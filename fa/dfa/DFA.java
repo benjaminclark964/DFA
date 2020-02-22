@@ -38,7 +38,7 @@ public class DFA implements DFAInterface {
 	public void addStartState(String s) {
 			State state = new DFAState(s);
 			startState = state;
-			all_states.add(state);
+			//all_states.add(state);
 			non_final_states.add(state);
 			currentState = (DFAState)startState;
 	}
@@ -48,7 +48,7 @@ public class DFA implements DFAInterface {
 		DFAState s = new DFAState(name);
 		s.addState(name);
 		non_final_states.add(s);
-		all_states.add(s);
+		//all_states.add(s);
 	}
 	
 	
@@ -68,6 +68,7 @@ public class DFA implements DFAInterface {
 	@Override
 	public Set<? extends State> getStates() {
 		all_states.addAll(final_states);
+		all_states.addAll(non_final_states);
 		return all_states;
 	}
 
