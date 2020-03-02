@@ -1,7 +1,7 @@
 Project 1 Part 1
 Authors: Kyle Tupper & Benjamin Clark
 
-Overview:
+Overview:<br/>
 This project is an implementation of a deterministic finite automaton.
 
 Compiling and Using:
