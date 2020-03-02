@@ -5,15 +5,24 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import fa.State;
 
+/**
+ * Creates a DFA and DFA complement
+ * 
+ * @author Kyle Tupper and Benjamin Clark
+ *
+ */
 public class DFA implements DFAInterface {
 	
 	private DFAState startState;
 	private DFAState currentState;
-	private LinkedHashSet<DFAState> all_states;
-	private LinkedHashSet<Character> abc;
-	private LinkedHashSet<DFAState> non_final_states;
-	private LinkedHashSet<DFAState> final_states;
+	private LinkedHashSet<DFAState> all_states;       // all DFA states
+	private LinkedHashSet<Character> abc;		      // DFA alphabet
+	private LinkedHashSet<DFAState> non_final_states; // all DFA non-final States
+	private LinkedHashSet<DFAState> final_states;	  // all DFA final States
 	
+	/**
+	 * Constructor for DFA
+	 */
 	public DFA() {
 		abc = new LinkedHashSet<Character>();
 		all_states = new LinkedHashSet<DFAState>();
@@ -21,6 +30,13 @@ public class DFA implements DFAInterface {
 		non_final_states = new LinkedHashSet<DFAState>();
 	}
 	
+	/**
+	 * Returns the desired DFAState if the state exists within currently
+	 * found states.
+	 * 
+	 * @param state state to be returned if state exists in current set
+	 * @return state if the desired state exists
+	 */
 	private DFAState getState(String state) {
 		DFAState ret = null;
 		
@@ -146,6 +162,8 @@ public class DFA implements DFAInterface {
 			} else if(currentStatesString.charAt(i) == ']') {
 				retVal.setCharAt(retValIndex+1, '}');
 				retVal.setCharAt(retValIndex, ' ');
+				retValIndex += 2;
+				retVal.delete(retValIndex,retVal.length());
 			} else if(currentStatesString.charAt(i) == ',') {
 				continue;
 			} else {
