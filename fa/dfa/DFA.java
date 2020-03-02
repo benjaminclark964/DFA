@@ -2,29 +2,29 @@ package fa.dfa;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Set;
+import java.util.LinkedHashSet;
 import fa.State;
 
 public class DFA implements DFAInterface {
 	
-	private State startState;
+	private DFAState startState;
 	private DFAState currentState;
-	private Set<State> all_states;
-	private Set<Character> abc;
-	private Set<State> non_final_states;
-	private Set<State> final_states;
+	private LinkedHashSet<DFAState> all_states;
+	private LinkedHashSet<Character> abc;
+	private LinkedHashSet<DFAState> non_final_states;
+	private LinkedHashSet<DFAState> final_states;
 	
 	public DFA() {
-		abc = new HashSet<Character>();
-		all_states = new HashSet<State>();
-		final_states = new HashSet<State>();
-		non_final_states = new HashSet<State>();
+		abc = new LinkedHashSet<Character>();
+		all_states = new LinkedHashSet<DFAState>();
+		final_states = new LinkedHashSet<DFAState>();
+		non_final_states = new LinkedHashSet<DFAState>();
 	}
 	
 	private DFAState getState(String state) {
-		State ret = null;
+		DFAState ret = null;
 		
-			for(State s : getStates()) {
+			for(DFAState s : getStates()) {
 				if(s.toString().equals(state)) {
 					ret = s;
 					break;
@@ -36,7 +36,7 @@ public class DFA implements DFAInterface {
 
 	@Override
 	public void addStartState(String s) {
-			State state = new DFAState(s);
+			DFAState state = new DFAState(s);
 			startState = state;
 			non_final_states.add(state);
 			currentState = (DFAState)startState;
@@ -45,12 +45,10 @@ public class DFA implements DFAInterface {
 	@Override
 	public void addState(String name) {
 		DFAState s = new DFAState(name);
-		s.addState(name);
+		all_states.add(s);
 		non_final_states.add(s);
 	}
 	
-	
-
 	@Override
 	public void addFinalState(String F) {
 			DFAState finalState = new DFAState(F);
@@ -64,26 +62,29 @@ public class DFA implements DFAInterface {
 	}
 
 	@Override
-	public Set<? extends State> getStates() {
-		all_states.addAll(final_states);
-		all_states.addAll(non_final_states);
-		return all_states;
+	public LinkedHashSet<? extends DFAState> getStates() {
+		LinkedHashSet<DFAState> temp = new LinkedHashSet<DFAState>();
+		temp.addAll(final_states);
+		temp.addAll(non_final_states);
+		temp.addAll(all_states);
+		all_states = temp;
+		return all_states;	
 	}
 
 	@Override
-	public Set<? extends State> getFinalStates() {
+	public LinkedHashSet<? extends DFAState> getFinalStates() {
 		
 		return final_states;
 	}
 
 	@Override	
-	public State getStartState() {
+	public DFAState getStartState() {
 		
 		return startState;
 	}
 
 	@Override
-	public Set<Character> getABC() {
+	public LinkedHashSet<Character> getABC() {
 		
 		return abc;
 	}
@@ -103,7 +104,7 @@ public class DFA implements DFAInterface {
 	 public boolean accepts(String s) {
 		 boolean accepted = false;
 		 char[] inputString = s.toCharArray();
-		 State currState =  startState;
+		 DFAState currState =  startState;
 
 		 //iterate over the chars
 		 if(! (inputString.length == 1 && inputString[0] == 'e'))
@@ -121,7 +122,7 @@ public class DFA implements DFAInterface {
 		 }
 
 	@Override
-	public State getToState(DFAState from, char onSymb) {
+	public DFAState getToState(DFAState from, char onSymb) {
 		return from.getTo(onSymb);
 	}
 	
@@ -159,7 +160,6 @@ public class DFA implements DFAInterface {
 	@Override
 	public String toString() {
 		String retVal = "";
-		
 		retVal += "Q = ";
 		retVal += allStatesProperStringFormat(getStates().toString());
 		retVal += '\n';
@@ -169,15 +169,20 @@ public class DFA implements DFAInterface {
 		retVal += '\n';
 		
 		retVal += "Delta = " + '\n';
-		retVal += "     ";
+		retVal += "          ";
 		for(int i = 0; i < abc.toArray().length; i++) {
-			retVal += abc.toArray()[i].toString();
-			retVal += " ";
+			retVal += String.format("%10s", abc.toArray()[i].toString());
+			retVal += "";
 		}
 		retVal += '\n';
-		for(State s : all_states) {
-			retVal += s.toString();
-			retVal += '\n';
+		for(DFAState s : all_states) {
+
+			retVal += String.format("%10s", s.toString());
+			for(char c : abc)
+			{
+				retVal += String.format("%10s", s.getTo(c).toString());
+			}
+			retVal += "\n";
 		}
 		
 		retVal += "q0 = " + startState.getName();
